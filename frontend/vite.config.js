@@ -9,7 +9,7 @@ dotenv.config();
 export default defineConfig({
   plugins: [react(), svgr()],
   build: {
-    outDir: 'dist',
+    outDir: 'dist', // This should be fine
     sourcemap: true,
   },
   server: {
