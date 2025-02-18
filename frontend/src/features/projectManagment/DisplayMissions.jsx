@@ -12,7 +12,6 @@ import { motion } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CustomCloseButton from "./CustomCloseButton";
-import { domain } from "../../../../api/api";
 
 
 const DisplayMissions = ({
@@ -46,7 +45,7 @@ const DisplayMissions = ({
         const userPromises = userIds.map((userId) =>
           axios
             .get(
-              `${domain}/api/Users/${userId}`,
+              `https://depi-final-project-backend.vercel.app/api/Users/${userId}`,
             )
             .then((res) => res.data)
             .catch((err) => {
@@ -78,7 +77,7 @@ const DisplayMissions = ({
   const handleDeleteMission = async (missionId) => {
     try {
       const response = await axios.delete(
-        `${domain}/api/Projects/del-mission`,
+        `https://depi-final-project-backend.vercel.app/api/Projects/del-mission`,
         { data: { projectId, missionId, userId: creatorId } },
       );
       setConfirmationModalOpen(false);
@@ -110,7 +109,7 @@ const DisplayMissions = ({
   const handleUpdateMissionState = async () => {
     try {
       const response = await axios.put(
-        `${domain}/api/Projects/updateMissionState`,
+        `https://depi-final-project-backend.vercel.app/api/Projects/updateMissionState`,
         {
           projectId,
           missionId: editingMission._id,

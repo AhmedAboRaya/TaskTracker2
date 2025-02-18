@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
-import { domain } from "../../../../api/api";
 
 const CreateProject = ({ onProjectCreated }) => {
   const [title, setTitle] = useState("");
@@ -25,7 +24,7 @@ const CreateProject = ({ onProjectCreated }) => {
 
     try {
       // Create a new project
-      const response = await axios.post(`${domain}/api/Projects/create`, {
+      const response = await axios.post(`https://depi-final-project-backend.vercel.app/api/Projects/create`, {
         title,
         description,
         userId,

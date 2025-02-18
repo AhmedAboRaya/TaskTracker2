@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import male from "../../../public/male.svg";
 import female from "../../../public/female.svg";
-import { domain } from "../../../../api/api";
 import "./NavBar.css";
 import axios from "axios";
 
@@ -24,7 +23,7 @@ function NavBar() {
 
     const fetchUserData = async (userId) => {
       try {
-        const response = await fetch(`${domain}/api/Users/${userId}`);
+        const response = await fetch(`https://depi-final-project-backend.vercel.app/api/Users/${userId}`);
         const data = await response.json();
 
         if (response.ok && data.user) {
@@ -61,7 +60,7 @@ function NavBar() {
 
   const clearUserNotification = async () => {
     try {
-      await axios.post(`${domain}/api/Projects/clear-notification`, {
+      await axios.post(`https://depi-final-project-backend.vercel.app/api/Projects/clear-notification`, {
         userId: userId,
       });
     } catch (error) {

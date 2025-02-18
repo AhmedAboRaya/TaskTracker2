@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CustomCloseButton from "./CustomCloseButton";
-import { domain } from "../../../../api/api";
 
 const AddMissionModal = ({
   modalOpen = false, 
@@ -39,7 +38,7 @@ const AddMissionModal = ({
     setError(null);
 
     try {
-      const response = await axios.post(`${domain}/api/Projects/addMission`, {
+      const response = await axios.post(`https://depi-final-project-backend.vercel.app/api/Projects/addMission`, {
         projectId,
         title: formData.title,
         description: formData.description,

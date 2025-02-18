@@ -2,7 +2,6 @@
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { domain } from "../../../../api/api";
 import ProfileDataForm from "./ProfileDataForm";
 import ProfileImage from "./ProfileImage";
 import ChangePasswordForm from "./ChangePasswordForm";
@@ -16,7 +15,7 @@ function Profile() {
   const [userData, setUserData] = useState(null);
   const userId = Cookies.get("userId");
   useEffect(() => {
-    fetch(`${domain}/api/Users/${userId}`)
+    fetch(`https://depi-final-project-backend.vercel.app/api/Users/${userId}`)
       .then((response) => response.json())
       .then((data) => setUserData(data.user)) // Access the nested user object
       .catch((error) => {
@@ -25,7 +24,7 @@ function Profile() {
   }, []);
   const ConfirmUpdate = async () => {
     try {
-      const res = await axios.put(`${domain}/api/Users/${userId}`, {
+      const res = await axios.put(`https://depi-final-project-backend.vercel.app/api/Users/${userId}`, {
         ...userData,
       });
       setUserData(res.data.user);

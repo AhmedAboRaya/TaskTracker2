@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import ChatSection from "./ChatSection"; 
 import DetailsSection from "./DetailsSection";
 import './project.css';
-import { domain } from "../../../../api/api";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -127,7 +126,7 @@ const ProjectDetails = () => {
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
-        const response = await axios.get(`${domain}/api/Projects/${id}`);
+        const response = await axios.get(`https://depi-final-project-backend.vercel.app/api/Projects/${id}`);
         setProject(response.data.project);
       } catch (error) {
         console.error("Error fetching project details:", error);

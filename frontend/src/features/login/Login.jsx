@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import DarkModeToggle from "../Ui/DarkModeToggle";
 import Lottie from "lottie-react";
 import { motion } from "framer-motion";
-import { domain } from "../../../../api/api";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 function Login() {
@@ -38,7 +37,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch(`${domain}/api/Users/login`, {
+      const response = await fetch(`https://depi-final-project-backend.vercel.app/api/Users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

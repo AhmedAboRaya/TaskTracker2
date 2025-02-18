@@ -8,7 +8,6 @@ import tasks from "../../../public/hero section.json";
 import "./Home.css";
 import AnimatedCompInHome from "../Ui/AnimatedCompInHome";
 import Cookies from "js-cookie";
-import { domain } from "../../../../api/api";
 import axios from "axios";
 
 function Hero() {
@@ -23,7 +22,7 @@ function Hero() {
 
     const validateUser = async (userId) => {
       try {
-        const response = await axios.get(`${domain}/api/Users/${userId}`);
+        const response = await axios.get(`https://depi-final-project-backend.vercel.app/api/Users/${userId}`);
 
         if (response.status === 200 && response.data.user) {
           setIsLoggedIn(true);

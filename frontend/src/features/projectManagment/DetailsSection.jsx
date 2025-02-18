@@ -8,7 +8,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Tabs from "./Tabs";
 import { motion } from "framer-motion";
-import { domain } from "../../../../api/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CustomCloseButton from "./CustomCloseButton";
@@ -32,7 +31,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
     const fetchMembers = async () => {
       try {
         const response = await axios.get(
-          `${domain}/api/Projects/${id}/members/${userId}`,
+          `https://depi-final-project-backend.vercel.app/api/Projects/${id}/members/${userId}`,
         );
 
         setMembers(response.data.members);
@@ -58,7 +57,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
 
     try {
       const response = await axios.delete(
-        `${domain}/api/Projects/remove-member`,
+        `https://depi-final-project-backend.vercel.app/api/Projects/remove-member`,
         {
           data: { projectId: id, userEmail, userId },
           headers: { "Content-Type": "application/json" },
@@ -100,7 +99,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
 
     try {
       const response = await axios.post(
-        `${domain}/api/Projects/assign-role`,
+        `https://depi-final-project-backend.vercel.app/api/Projects/assign-role`,
         {
           projectId: id,
           userEmail: addEmail,
@@ -143,7 +142,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
     const { userEmail, newRole } = updatedMember;
     try {
       const response = await axios.put(
-        `${domain}/api/Projects/update-role`,
+        `https://depi-final-project-backend.vercel.app/api/Projects/update-role`,
         {
           projectId: id,
           userEmail,

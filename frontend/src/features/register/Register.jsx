@@ -9,7 +9,6 @@ import DarkModeToggle from "../Ui/DarkModeToggle";
 import darkRegisterSVG from "../../../public/regiter.json";
 import lightRegisterSVG from "../../../public/lightRegister.json";
 import Lottie from "lottie-react";
-import { domain } from "../../../../api/api";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 function Register() {
@@ -40,7 +39,7 @@ function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${domain}/api/Users/register`, {
+      const response = await fetch(`https://depi-final-project-backend.vercel.app/api/Users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

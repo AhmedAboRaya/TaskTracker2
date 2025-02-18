@@ -5,7 +5,6 @@ import ProjectCard from "./ProjectCard";
 import { useSelector } from "react-redux";
 import CreateProject from "./CreateProject";
 import { motion } from "framer-motion";
-import { domain } from "../../../../api/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CustomCloseButton from "./CustomCloseButton";
@@ -23,7 +22,7 @@ function ProjectManagement() {
       if (userId) {
         setLoading(true);
         const response = await axios.get(
-          `${domain}/api/projects/user/${userId}/projects`
+          `https://depi-final-project-backend.vercel.app/api/projects/user/${userId}/projects`
         );
         setProjects(
           Array.isArray(response.data.projects) ? response.data.projects : []
@@ -64,7 +63,7 @@ function ProjectManagement() {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `${domain}/api/projects/${selectedProjectId}/${userId}`
+        `https://depi-final-project-backend.vercel.app/api/projects/${selectedProjectId}/${userId}`
       );
       handleProjectDeleted(selectedProjectId);
       toast.success("Project deleted successfully!", {

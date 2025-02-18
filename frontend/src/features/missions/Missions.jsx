@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
-import { domain } from "../../../../api/api";
 
 const Missions = () => {
   const darkMode = useSelector((state) => state.darkMode.darkMode);
@@ -16,7 +15,7 @@ const Missions = () => {
       try {
         setLoading(true); 
         const response = await axios.get(
-          `${domain}/api/Projects/userMissions/${creatorId}`
+          `https://depi-final-project-backend.vercel.app/api/Projects/userMissions/${creatorId}`
         );
         setMissions(response.data.missions || []);
       } catch (error) {
@@ -29,7 +28,7 @@ const Missions = () => {
     // Function to clear notifications on first render
     const clearUserNotification = async () => {
       try {
-        await axios.post(`${domain}/api/Projects/clear-notification`, {
+        await axios.post(`https://depi-final-project-backend.vercel.app/api/Projects/clear-notification`, {
           userId: creatorId,
         });
       } catch (error) {
@@ -44,7 +43,7 @@ const Missions = () => {
   const updateMissionState = async (missionId, newState) => {
     try {
       const response = await axios.put(
-        `${domain}/api/Projects/updateMyMission/${missionId}/${creatorId}`,
+        `https://depi-final-project-backend.vercel.app/api/Projects/updateMyMission/${missionId}/${creatorId}`,
         {
           newState,
         }
