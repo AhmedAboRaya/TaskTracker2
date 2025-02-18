@@ -2,6 +2,7 @@ import { Outlet, useNavigation, useLocation } from "react-router";
 import NavBar from "../Ui/NavBar";
 import Loader from "../Ui/Loader";
 import { useSelector } from "react-redux";
+import Footer from "../Ui/Footer";
 
 function AppLayout() {
   const navigation = useNavigation();
@@ -13,18 +14,13 @@ function AppLayout() {
   const shouldShowNavBar = !hideNavBarRoutes.includes(location.pathname);
 
   return (
-    <div
-      className={`${
-        darkMode ? "bg-dark-bg" : "bg-light-bg"
-      } min-h-screen`}
-    >
+    <div className={`${darkMode ? "bg-dark-bg" : "bg-light-bg"} relative`}>
       {isLoading && <Loader />}
-      <div className="flex justify-center">
-        {shouldShowNavBar && <NavBar />}
-      </div>
-      <main className="">
+      {shouldShowNavBar && <NavBar />}
+      <main className="min-h-dvh">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

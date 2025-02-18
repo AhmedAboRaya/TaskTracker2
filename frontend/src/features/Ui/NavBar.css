@@ -24,3 +24,16 @@
 .after:hover::after {
   width: 100%;
 }
+
+.notification::before{
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 50%;
+  z-index: 1;
+  animation: pulse 1s infinite;
+}

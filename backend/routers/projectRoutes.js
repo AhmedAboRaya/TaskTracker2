@@ -1,5 +1,5 @@
-import express from 'express';
-import {
+const express = require('express');
+const {
   assignRole,
   updateRole,
   removeMember,
@@ -13,8 +13,9 @@ import {
   getAllMissions,
   getUserMissions,
   deleteMissionFromProject,
-  updateMyMissionState
-} from '../controllers/projectController.js';
+  updateMyMissionState,
+  clearNotification
+} = require('../controllers/projectController.js');
 
 const router = express.Router();
 
@@ -44,5 +45,6 @@ router.get('/userMissions/:userId', getUserMissions);                       // �
 
 router.delete('/del-mission', deleteMissionFromProject);                    // ✅ 
 
+router.post('/clear-notification', clearNotification);                      // ✅ 
 
-export default router;
+module.exports = router;

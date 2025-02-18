@@ -9,6 +9,10 @@ import { CircleX, Bolt } from "lucide-react";
 import ConfirmationModal from "./ConfirmationModal";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CustomCloseButton from "./CustomCloseButton";
+import { domain } from "../../../../api/api";
 
 
 const DisplayMissions = ({
@@ -41,12 +45,14 @@ const DisplayMissions = ({
 
         const userPromises = userIds.map((userId) =>
           axios
-            .get(`http://localhost:5000/api/Users/${userId}`)
+            .get(
+              `${domain}/api/Users/${userId}`,
+            )
             .then((res) => res.data)
             .catch((err) => {
               console.error(`Error fetching user ${userId}:`, err);
               return null;
-            })
+            }),
         );
 
         const usersData = await Promise.all(userPromises);
@@ -72,12 +78,22 @@ const DisplayMissions = ({
   const handleDeleteMission = async (missionId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/Projects/del-mission`,
-        { data: { projectId, missionId, userId: creatorId } }
+        `${domain}/api/Projects/del-mission`,
+        { data: { projectId, missionId, userId: creatorId } },
       );
       setConfirmationModalOpen(false);
       if (response.data.success) {
         setReloadMission(!reloadMission);
+        toast.success("Mission deleted successfully!", {
+          className: `toast-container mt-11 ${
+            darkMode ? "bg-dark-bg text-dark-primary" : "bg-light-bg text-light-primary"
+          }`,
+          bodyClassName: "toast-body",
+          progressClassName: `toast-progress ${
+            darkMode ? "bg-dark-primary" : "bg-light-primary"
+          }`,
+          closeButton: <CustomCloseButton darkMode={darkMode} />,
+        });
       }
     } catch (error) {
       console.error("Error deleting mission:", error);
@@ -94,18 +110,28 @@ const DisplayMissions = ({
   const handleUpdateMissionState = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/Projects/updateMissionState`,
+        `${domain}/api/Projects/updateMissionState`,
         {
           projectId,
           missionId: editingMission._id,
           newState,
           userId: creatorId,
-        }
+        },
       );
       if (response.data.success) {
         setReloadMission(!reloadMission);
         setEditingMission(null);
         setNewState("");
+        toast.success("Mission state updated successfully!", {
+          className: `toast-container mt-11 ${
+            darkMode ? "bg-dark-bg text-dark-primary" : "bg-light-bg text-light-primary"
+          }`,
+          bodyClassName: "toast-body",
+          progressClassName: `toast-progress ${
+            darkMode ? "bg-dark-primary" : "bg-light-primary"
+          }`,
+          closeButton: <CustomCloseButton darkMode={darkMode} />,
+        });
       }
     } catch (error) {
       console.error("Error updating mission state:", error);
@@ -150,11 +176,11 @@ const DisplayMissions = ({
         ) : (
           missions.map((mission) => (
             <motion.li
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
               key={mission._id}
-              className={`p-4 my-3 flex flex-row justify-between border-2 rounded-xl transition-transform transform hover:scale-105 ${
+              className={`p-4 my-3 flex flex-row justify-between border-2 rounded-xl transition-transform transform hover:scale-[1.007] ${
                 darkMode
                   ? "bg-dark-card text-dark-text border-dark-primary"
                   : "bg-light-card text-light-text border-light-primary"
@@ -238,6 +264,7 @@ const DisplayMissions = ({
         onCancel={() => setConfirmationModalOpen(false)}
         setConfirmationModalOpen={setConfirmationModalOpen}
       />
+      <ToastContainer />
     </div>
   );
 };

@@ -47,8 +47,8 @@ function Features() {
                 ? "text-dark-text bg-dark-secondary"
                 : "text-light-text bg-light-secondary"
             } p-6 rounded-xl`}
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true }}
           >
@@ -66,8 +66,8 @@ function Features() {
                 ? "text-dark-text bg-dark-accent"
                 : "text-light-text bg-light-accent"
             } p-6 rounded-xl`}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
             viewport={{ once: true }}
           >

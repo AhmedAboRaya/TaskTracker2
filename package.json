@@ -2,10 +2,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon backend/server.js",
-    "start": "node backend/server.js",
-    "build": "vite build"
+    "start": "node backend/server.js"
   },
-  "type": "module",
   "dependencies": {
     "@headlessui/react": "^2.1.10",
     "@hookform/resolvers": "^3.9.0",
@@ -13,6 +11,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "helmet": "^8.0.0",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.452.0",
     "mongoose": "^8.6.3",
@@ -28,7 +27,6 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "daisyui": "^4.12.10",
-    "vite": "^5.4.9"
+    "daisyui": "^4.12.10"
   }
 }

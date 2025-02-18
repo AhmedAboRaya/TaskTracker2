@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import { domain } from "../../../../api/api";
 
 const CreateProject = ({ onProjectCreated }) => {
   const [title, setTitle] = useState("");
@@ -24,25 +25,20 @@ const CreateProject = ({ onProjectCreated }) => {
 
     try {
       // Create a new project
-      const response = await axios.post(
-        "http://localhost:5000/api/Projects/create",
-        {
-          title,
-          description,
-          userId,
-        }
-      );
+      const response = await axios.post(`${domain}/api/Projects/create`, {
+        title,
+        description,
+        userId,
+      });
 
       if (response.status === 201) {
-        setSuccess("Project created successfully!");
+        setSuccess("");
         setError("");
-
+        setTitle("")
+        setDescription("");
         onProjectCreated();
-
-        setTimeout(() => {
-          navigate("/projectManagement");
-          document.getElementById("my_modal_2").close();
-        }, 1000);
+        navigate("/projectManagement");
+        document.getElementById("my_modal_2").close();
       }
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {

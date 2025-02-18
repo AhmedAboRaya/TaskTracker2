@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import ChatSection from "./ChatSection"; // Import the ChatSection component
-import DetailsSection from "./DetailsSection"; // Import the DetailsSection component
+import ChatSection from "./ChatSection"; 
+import DetailsSection from "./DetailsSection";
 import './project.css';
+import { domain } from "../../../../api/api";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -126,9 +127,7 @@ const ProjectDetails = () => {
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/Projects/${id}`
-        );
+        const response = await axios.get(`${domain}/api/Projects/${id}`);
         setProject(response.data.project);
       } catch (error) {
         console.error("Error fetching project details:", error);
@@ -139,7 +138,13 @@ const ProjectDetails = () => {
   }, [id, reloadMission]);
 
   if (!project) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center mt-80">
+        <span className={`loading loading-ball loading-lg ${
+          darkMode ? "text-dark-primary" : "text-light-primary"
+        }`}></span>
+      </div>
+    );
   }
 
   return (
@@ -207,6 +212,7 @@ const ProjectDetails = () => {
 };
 
 export default ProjectDetails;
+
 
 
 {/* <button

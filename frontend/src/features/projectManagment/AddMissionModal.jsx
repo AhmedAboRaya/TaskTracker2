@@ -3,13 +3,17 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CustomCloseButton from "./CustomCloseButton";
+import { domain } from "../../../../api/api";
 
 const AddMissionModal = ({
-  modalOpen,
-  setModalOpen,
+  modalOpen = false, 
+  setModalOpen = () => {},
   projectId,
-  reloadMission,
-  setReloadMission,
+  reloadMission = false,
+  setReloadMission = () => {},
 }) => {
   const darkMode = useSelector((state) => state.darkMode.darkMode);
 
@@ -19,7 +23,6 @@ const AddMissionModal = ({
     userEmail: "",
   });
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   const creatorId = Cookies.get("userId");
 
@@ -34,27 +37,32 @@ const AddMissionModal = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    setSuccess(false);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/Projects/addMission",
-        {
-          projectId,
-          title: formData.title,
-          description: formData.description,
-          userEmail: formData.userEmail,
-          creatorId,
-        }
-      );
+      const response = await axios.post(`${domain}/api/Projects/addMission`, {
+        projectId,
+        title: formData.title,
+        description: formData.description,
+        userEmail: formData.userEmail,
+        creatorId,
+      });
 
       if (response.data.success) {
-        setSuccess(true);
         setFormData({ title: "", description: "", userEmail: "" });
-        setTimeout(() => {
-          setModalOpen(false);
-          setReloadMission(!reloadMission);
-        }, 800);
+        setModalOpen(false);
+        setReloadMission(!reloadMission);
+        toast.success("Mission deleted successfully!", {
+          className: `toast-container mt-11 ${
+            darkMode
+              ? "bg-dark-bg text-dark-primary"
+              : "bg-light-bg text-light-primary"
+          }`,
+          bodyClassName: "toast-body",
+          progressClassName: `toast-progress ${
+            darkMode ? "bg-dark-primary" : "bg-light-primary"
+          }`,
+          closeButton: <CustomCloseButton darkMode={darkMode} />,
+        });
       }
     } catch (error) {
       console.error("Error adding mission:", error);
@@ -79,13 +87,16 @@ const AddMissionModal = ({
           >
             <h2 className="font-bold text-xl">Add Mission</h2>
             {error && <p className="text-red-500">{error}</p>}
-            {success && (
-              <p className="text-green-500">Mission added successfully!</p>
-            )}
             <form onSubmit={handleSubmit}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Title</span>
+                  <span
+                    className={`label-text ${
+                      darkMode ? "text-dark-primary" : "text-light-primary"
+                    }`}
+                  >
+                    Title
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -102,7 +113,13 @@ const AddMissionModal = ({
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Description</span>
+                  <span
+                    className={`label-text ${
+                      darkMode ? "text-dark-primary" : "text-light-primary"
+                    }`}
+                  >
+                    Description
+                  </span>
                 </label>
                 <input
                   name="description"
@@ -118,7 +135,13 @@ const AddMissionModal = ({
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">User Email</span>
+                  <span
+                    className={`label-text ${
+                      darkMode ? "text-dark-primary" : "text-light-primary"
+                    }`}
+                  >
+                    User Email
+                  </span>
                 </label>
                 <input
                   type="email"
@@ -160,6 +183,7 @@ const AddMissionModal = ({
           </div>
         </dialog>
       )}
+      <ToastContainer />
     </>
   );
 };

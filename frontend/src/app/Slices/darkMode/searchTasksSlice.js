@@ -1,4 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  sortTasksByDueDate,
+  sortTasksByPriorityAsc,
+  sortTasksByPriorityDesc,
+} from "../../../features/tasks/sortingFunctions";
 
 const initialState = {
   searchKeyword: "",
@@ -6,6 +11,7 @@ const initialState = {
   filteredTasks: [],
   filtrationPriorities: [],
   filtrationStatus: "",
+  sortingKeyword: "",
 };
 
 const searchTasksReducer = createSlice({
@@ -71,6 +77,22 @@ const searchTasksReducer = createSlice({
         state.filtrationStatus = status;
       }
     },
+    sortingTasks: (state, action) => {
+      state.sortingKeyword = action.payload;
+      switch (state.sortingKeyword) {
+        case "dueDate":
+          state.filteredTasks = sortTasksByDueDate(state.filteredTasks);
+          break;
+        case "lowToHigh":
+          state.filteredTasks = sortTasksByPriorityAsc(state.filteredTasks);
+          break;
+        case "highToLow":
+          state.filteredTasks = sortTasksByPriorityDesc(state.filteredTasks);
+          break;
+        default:
+          break;
+      }
+    },
   },
 });
 
@@ -82,6 +104,7 @@ export const {
   setFiltrationPriorities,
   togglePriority,
   toggleStatus,
+  sortingTasks,
 } = searchTasksReducer.actions;
 
 export default searchTasksReducer.reducer;

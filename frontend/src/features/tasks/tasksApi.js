@@ -1,10 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
+import { domain } from "../../../../api/api";
 
 export const tasksApi = createApi({
   reducerPath: "tasksApi",
   tagTypes: ["tasks"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${domain}/api`,
+  }),
   endpoints: (builder) => ({
     getTasks: builder.query({
       query: () => ({
@@ -32,7 +35,7 @@ export const tasksApi = createApi({
         const patchResult = dispatch(
           tasksApi.util.updateQueryData("getTasks", _id, (draft) => {
             Object.assign(draft, patch);
-          })
+          }),
         );
         try {
           await queryFulfilled;
@@ -55,7 +58,7 @@ export const tasksApi = createApi({
         const patchResult = dispatch(
           tasksApi.util.updateQueryData("getTasks", id, (draft) => {
             Object.assign(draft, patch);
-          })
+          }),
         );
         try {
           await queryFulfilled;

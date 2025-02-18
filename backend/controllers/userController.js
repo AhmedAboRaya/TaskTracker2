@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+const User = require("../models/userModel.js");
 
 const register = async (req, res) => {
   const { username, email, password, gender } = req.body;
@@ -63,7 +63,7 @@ const login = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { userId } = req.params;
-  const { username, email, password, gender } = req.body;
+  const { username, email, password, gender, imageUrl, imageId } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -100,7 +100,8 @@ const updateUser = async (req, res) => {
     } else if (gender) {
       user.gender = gender;
     }
-
+    user.imageId = imageId;
+    user.imageUrl = imageUrl;
     const updatedUser = await user.save();
     res
       .status(200)
@@ -119,10 +120,10 @@ const getUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json({ user, notification: user.notification });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export { register, login, updateUser, getUser };
+module.exports = { register, login, updateUser, getUser };

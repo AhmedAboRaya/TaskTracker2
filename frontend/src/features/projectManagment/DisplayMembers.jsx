@@ -73,15 +73,14 @@ const DisplayMembers = ({
           members.map((member) => (
             <motion.li
               key={member._id}
-              className={`p-4 my-3 flex flex-row justify-between border-2 rounded-xl transition-transform transform hover:scale-105 ${
+              className={`p-4 my-3 flex flex-row justify-between border-2 rounded-xl transition-transform transform hover:scale-[1.008] ${
                 darkMode
                   ? "text-dark-primary border-dark-primary"
                   : "text-light-primary border-light-primary"
               }`}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7 }}
             >
               <div>
                 <strong>{member.role}</strong>

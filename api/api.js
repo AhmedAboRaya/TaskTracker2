@@ -21,3 +21,8 @@ const apis = {
     removeMember: ["/api/Projects/remove-member", "DELETE"],
     deleteProject: (projectId) => ["/api/Projects/" + projectId, "DELETE"],
 };
+
+const localUrl = "http://localhost:5000"
+const domainUrl = "https://depi-final-project-backend.vercel.app";
+
+export const domain = domainUrl;

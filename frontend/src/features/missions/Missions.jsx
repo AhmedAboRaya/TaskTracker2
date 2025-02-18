@@ -3,42 +3,53 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
-import { Spinner } from "reactstrap"; // Import a spinner component from a library
+import { domain } from "../../../../api/api";
 
 const Missions = () => {
   const darkMode = useSelector((state) => state.darkMode.darkMode);
   const [missions, setMissions] = useState([]);
-  const [loading, setLoading] = useState(true); // State to manage loading status
+  const [loading, setLoading] = useState(true);
   const creatorId = Cookies.get("userId");
 
   useEffect(() => {
     const fetchMissions = async () => {
       try {
-        setLoading(true); // Set loading to true when starting to fetch
+        setLoading(true); 
         const response = await axios.get(
-          `http://localhost:5000/api/Projects/userMissions/${creatorId}`
+          `${domain}/api/Projects/userMissions/${creatorId}`
         );
         setMissions(response.data.missions || []);
       } catch (error) {
         console.error("Error fetching missions:", error);
       } finally {
-        setLoading(false); // Set loading to false after fetching is done
+        setLoading(false); 
       }
     };
 
+    // Function to clear notifications on first render
+    const clearUserNotification = async () => {
+      try {
+        await axios.post(`${domain}/api/Projects/clear-notification`, {
+          userId: creatorId,
+        });
+      } catch (error) {
+        console.error("Error clearing notifications:", error);
+      }
+    };
+
+    clearUserNotification();
     fetchMissions();
   }, [creatorId]);
 
   const updateMissionState = async (missionId, newState) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/Projects/updateMyMission/${missionId}/${creatorId}`,
+        `${domain}/api/Projects/updateMyMission/${missionId}/${creatorId}`,
         {
           newState,
         }
       );
       if (response.data.success) {
-        // Update the mission state in the UI
         setMissions((prevMissions) =>
           prevMissions.map((mission) =>
             mission._id === missionId
@@ -46,7 +57,7 @@ const Missions = () => {
               : mission
           )
         );
-        console.log("Mission state updated successfully.");
+
       }
     } catch (error) {
       console.error("Error updating mission state:", error);
@@ -67,7 +78,7 @@ const Missions = () => {
       case "in progress":
         return "completed";
       case "completed":
-        return null; // No next state for completed missions
+        return null;
       default:
         return null;
     }
@@ -94,7 +105,7 @@ const Missions = () => {
           darkMode ? "text-dark-primary" : "text-light-primary"
         }`}
       >
-        {loading ? ( // Check if loading is true
+        {loading ? (
           <li className="p-4 text-center">
             <span className="loading loading-ball loading-lg"></span>
           </li>
@@ -104,7 +115,7 @@ const Missions = () => {
           missions.map((mission) => (
             <li
               key={mission._id}
-              className={`p-4 my-3 flex flex-row justify-between border-2 rounded-xl transition-transform transform hover:scale-105 ${
+              className={`p-4 my-3 flex flex-row justify-between border-2 rounded-xl transition-transform transform hover:scale-[1.008] ${
                 darkMode
                   ? "bg-dark-card text-dark-text border-dark-primary"
                   : "bg-light-card text-light-text border-light-primary"
@@ -121,7 +132,7 @@ const Missions = () => {
                     {mission.status}
                   </span>
                 </div>
-                <p className="text-gray-700">{mission.description}</p>
+                <p className="text-gray-500">{mission.description}</p>
                 <p className="text-sm flex flex-row justify-between">
                   <span className="font-semibold">
                     Created At:{" "}
@@ -137,7 +148,7 @@ const Missions = () => {
                       onClick={() =>
                         handleStatusChange(mission._id, mission.status)
                       }
-                      disabled={mission.status === "completed"} // Disable if already completed
+                      disabled={mission.status === "completed"} 
                     >
                       {mission.status === "completed"
                         ? "Completed"

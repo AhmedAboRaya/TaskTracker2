@@ -1,8 +1,8 @@
-import Task from "../models/taskModel.js";
-import User from "../models/userModel.js";
-import mongoose from "mongoose";
+const Task = require("../models/taskModel.js");
+const User = require("../models/userModel.js");
+const mongoose = require("mongoose");
 
-export const getTasks = async (req, res) => {
+ const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({});
     res.status(200).json({ success: true, data: tasks });
@@ -12,7 +12,7 @@ export const getTasks = async (req, res) => {
   }
 };
 
-export const createTask = async (req, res) => {
+ const createTask = async (req, res) => {
   const { title, description, priority, dueDate, userId } = req.body;
 
   if (!title || !description || !priority || !dueDate || !userId) {
@@ -50,7 +50,7 @@ export const createTask = async (req, res) => {
   }
 };
 
-export const updateTask = async (req, res) => {
+ const updateTask = async (req, res) => {
   const { id } = req.params;
   const taskData = req.body;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -67,7 +67,7 @@ export const updateTask = async (req, res) => {
   }
 };
 
-export const deleteTask = async (req, res) => {
+ const deleteTask = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -90,7 +90,7 @@ export const deleteTask = async (req, res) => {
   }
 };
 
-export const getUserTasks = async (req, res) => {
+ const getUserTasks = async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -108,7 +108,7 @@ export const getUserTasks = async (req, res) => {
   }
 };
 
-export const getCountCompletedTasks = async (req, res) => {
+ const getCountCompletedTasks = async (req, res) => {
   const { userId } = req.params;
   try {
     const userExists = await User.findById(userId);
@@ -132,4 +132,13 @@ export const getCountCompletedTasks = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, message: "Error fetching tasks" });
   }
+};
+
+module.exports = {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  getUserTasks,
+  getCountCompletedTasks,
 };

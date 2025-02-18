@@ -8,6 +8,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Tabs from "./Tabs";
 import { motion } from "framer-motion";
+import { domain } from "../../../../api/api";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CustomCloseButton from "./CustomCloseButton";
 
 const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
   const [activeTab, setActiveTab] = useState("members");
@@ -28,7 +32,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
     const fetchMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/Projects/${id}/members/${userId}`
+          `${domain}/api/Projects/${id}/members/${userId}`,
         );
 
         setMembers(response.data.members);
@@ -54,20 +58,40 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
 
     try {
       const response = await axios.delete(
-        "http://localhost:5000/api/Projects/remove-member",
+        `${domain}/api/Projects/remove-member`,
         {
           data: { projectId: id, userEmail, userId },
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       if (response.status === 200) {
         setMembers((prevMembers) =>
           prevMembers.filter((m) => m.user._id !== member.user._id)
         );
+        toast.success("Member deleted successfully!", {
+          className: `toast-container mt-11 ${
+            darkMode ? "bg-dark-bg text-dark-primary" : "bg-light-bg text-light-primary"
+          }`,
+          bodyClassName: "toast-body",
+          progressClassName: `toast-progress ${
+            darkMode ? "bg-dark-primary" : "bg-light-primary"
+          }`,
+          closeButton: <CustomCloseButton darkMode={darkMode} />,
+        });
       }
     } catch (error) {
       console.error("Error deleting member:", error);
+      toast.error("You don't have permission to delete this member.", {
+        className: `toast-container mt-11 ${
+          darkMode ? "bg-dark-bg text-dark-primary" : "bg-light-bg text-light-primary"
+        }`,
+        bodyClassName: "toast-body",
+        progressClassName: `toast-progress ${
+          darkMode ? "bg-dark-primary" : "bg-light-primary"
+        }`,
+        closeButton: <CustomCloseButton darkMode={darkMode} />,
+      });
     }
   };
 
@@ -76,7 +100,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/Projects/assign-role",
+        `${domain}/api/Projects/assign-role`,
         {
           projectId: id,
           userEmail: addEmail,
@@ -85,7 +109,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
         },
         {
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       if (response.status === 200) {
@@ -96,6 +120,16 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
         setAddRole("manager");
         setError(null);
         setReload(!reload);
+        toast.success("Member added successfully!", {
+          className: `toast-container mt-11 ${
+            darkMode ? "bg-dark-bg text-dark-primary" : "bg-light-bg text-light-primary"
+          }`,
+          bodyClassName: "toast-body",
+          progressClassName: `toast-progress ${
+            darkMode ? "bg-dark-primary" : "bg-light-primary"
+          }`,
+          closeButton: <CustomCloseButton darkMode={darkMode} />,
+        });
       }
     } catch (error) {
       console.error("Error adding member:", error);
@@ -109,13 +143,13 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
     const { userEmail, newRole } = updatedMember;
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/Projects/update-role`,
+        `${domain}/api/Projects/update-role`,
         {
           projectId: id,
           userEmail,
           newRole: newRole.newRole,
           userId: Cookies.get("userId"),
-        }
+        },
       );
 
       if (response.status === 200) {
@@ -128,6 +162,16 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
         );
         setIsEditModalOpen(false);
         setReload(!reload);
+        toast.success("Role updated successfully!", {
+          className: `toast-container mt-11 ${
+            darkMode ? "bg-dark-bg text-dark-primary" : "bg-light-bg text-light-primary"
+          }`,
+          bodyClassName: "toast-body",
+          progressClassName: `toast-progress ${
+            darkMode ? "bg-dark-primary" : "bg-light-primary"
+          }`,
+          closeButton: <CustomCloseButton darkMode={darkMode} />,
+        });
       }
     } catch (error) {
       console.error("Error updating member:", error);
@@ -142,6 +186,8 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
       day: "numeric",
     }
   );
+
+  
 
   return (
     <motion.div
@@ -237,6 +283,7 @@ const DetailsSection = ({ project, reloadMission, setReloadMission }) => {
           />
         </motion.div>
       )}
+      <ToastContainer />
     </motion.div>
   );
 };
